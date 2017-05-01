@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carta.Core", "Carta.Core\Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carta.Win", "Carta.Win\Carta.Win.csproj", "{D81795B2-F7CD-471C-895D-7211EF9CA927}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carta.Tests", "Carta.Tests\Carta.Tests.csproj", "{EBA8C05A-5A7C-48C5-884A-2DBA07E75A36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D81795B2-F7CD-471C-895D-7211EF9CA927}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81795B2-F7CD-471C-895D-7211EF9CA927}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81795B2-F7CD-471C-895D-7211EF9CA927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBA8C05A-5A7C-48C5-884A-2DBA07E75A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBA8C05A-5A7C-48C5-884A-2DBA07E75A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBA8C05A-5A7C-48C5-884A-2DBA07E75A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA8C05A-5A7C-48C5-884A-2DBA07E75A36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
