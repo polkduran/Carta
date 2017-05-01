@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CartaGrid.cs" />
+    <Compile Include="CartaLine.cs" />
+    <Compile Include="Cell.cs" />
+    <Compile Include="CellVisualState.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

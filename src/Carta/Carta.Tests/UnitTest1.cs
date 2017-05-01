@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Carta.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Carta.Tests
 {
@@ -9,38 +10,30 @@ namespace Carta.Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod2()
+        public void GridInitialLineStateTest()
         {
-            var t = new int[2, 3] {
-                {1,2,3 },
-                {4,5,6 },
-            };
-
-            for (var x = 0; x < t.GetLength(0); x++)
-            {
-                for (var y = 0; y < t.GetLength(1); y++)
-                {
-                    var i = t[x, y];
-                }
-            }
-        }
-
-        [TestMethod]
-        public void TestMethod1()
-        {
+            /*
+                 c0 c1 c2 c3
+             r0 [ o  .  o  . ]
+             r1 [ o  .  o  o ]
+             r2 [ .  .  o  . ]             
+             */
             var grid = new bool[4, 3] {
                 { true, true, false },
-                { false, true, false },
-                { true, true, false },
+                { false, false, false },
+                { true, true, true},
                 { false, true, false },
             };
 
             var cartaGrid = new CartaGrid(grid);
-            Assert.IsNotNull(cartaGrid);
+
+            Assert.IsTrue(cartaGrid.Rows.All(r => !r.Completed));
+            Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 1).All(c => !c.Completed));
+            Assert.AreEqual(true, cartaGrid.Columns[1].Completed);
         }
 
         [TestMethod]
-        public void Grid_3x3_Test()
+        public void Grid_3x3_BuiltTest()
         {
             /*
                  c0 c1 c2
@@ -60,7 +53,7 @@ namespace Carta.Tests
         }
 
         [TestMethod]
-        public void Grid_4x3_Test()
+        public void Grid_4x3_BuildTest()
         {
             /*
                  c0 c1 c2 c3
