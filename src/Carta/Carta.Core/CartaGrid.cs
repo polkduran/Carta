@@ -8,11 +8,13 @@ namespace Carta.Core
 {
     public class CartaGrid
     {
-        private Cell[,] _cells;
+        public Cell[,] Cells { get; private set; }
 
-        public IReadOnlyCollection<CartaLine> Columns { get; private set; }
+        private readonly List<CartaLine> _columns = new List<CartaLine>();
+        public IReadOnlyList<CartaLine> Columns => _columns;
 
-        public IReadOnlyCollection<CartaLine> Rows { get; private set; }
+        private readonly List<CartaLine> _rows = new List<CartaLine>();
+        public IReadOnlyList<CartaLine> Rows => _rows;
 
         public CartaGrid(bool[,] grid)
         {
@@ -21,31 +23,35 @@ namespace Carta.Core
 
         private void BuildCellGrid(bool[,] grid)
         {
-            _cells = new Cell[grid.GetLength(0), grid.GetLength(1)];
-            var cols = new List<int>[grid.GetLength(0)];
-            var rows = new List<int>[grid.GetLength(1)];
+            Cells = new Cell[grid.GetLength(0), grid.GetLength(1)];
 
-            for (int x = 0; x < grid.GetLength(1); x++)
+            for (int x = 0; x < grid.GetLength(0); x++)
             {
-                cols[x] = new List<int> { 0 };
-                for (int y = 0; y < grid.GetLength(0); y++)
+                _columns.Add(new CartaLine(x));
+                for (int y = 0; y < grid.GetLength(1); y++)
                 {
                     if (x == 0)
                     {
-                        rows[y] = new List<int> { 0 };
+                        _rows.Add(new CartaLine(y));
                     }
-                    var filled = grid[x, y];
-                    FillLine(filled, cols[x]);
-                    FillLine(filled, rows[y]);
-                    _cells[x, y] = new Cell(x, y, filled);
+                    var cell = new Cell(x, y, grid[x, y]); 
+                    Cells[x, y] = cell;
 
-                    if (x == grid.GetLength(1) - 1)
+                    FillLines(cell);
+
+                    if (x == grid.GetLength(0) - 1)
                     {
-                        RemoveLastIfNeeded(rows[y]);
+                        RemoveLastIfNeeded(_rows[y].BlocksInternal);
                     }
                 }
-                RemoveLastIfNeeded(cols[x]);
+                RemoveLastIfNeeded(_columns[x].BlocksInternal);
             }
+        }
+
+        private void FillLines(Cell cell)
+        {
+            FillLine(cell, _columns[cell.X]);
+            FillLine(cell, _rows[cell.Y]);
         }
 
         private void RemoveLastIfNeeded(List<int> blocks)
@@ -57,24 +63,22 @@ namespace Carta.Core
             }
         }
 
-        private void FillLine(bool filled, List<int> blocks)
+        private void FillLine(Cell cell, CartaLine line)
         {
-            if (filled)
+            line.Cells.Add(cell);
+            var lastIndex = line.BlocksInternal.Count - 1;
+            if (cell.Filled)
             {
-                blocks[blocks.Count - 1]++;
+                line.BlocksInternal[lastIndex]++;
             }
             else
             {
-                if (blocks.Count > 1)
+                
+                if (line.BlocksInternal[lastIndex] > 0)
                 {
-                    blocks.Add(0);
+                    line.BlocksInternal.Add(0);
                 }
             }
-        }
-
-        public Cell GetCell(int x, int y)
-        {
-            return _cells[x, y];
         }
     }
 
@@ -112,16 +116,42 @@ namespace Carta.Core
         MarkedAsEmpty
     }
 
-    public class CartaLine
+    public class CartaLine : ObservableObject
     {
         public int Index { get; }
-        public IReadOnlyList<int> Blocks { get; }
-        public bool Completed { get; set; }
 
-        public CartaLine(int index, IReadOnlyList<int> blocks)
+        internal List<int> BlocksInternal { get; }
+        public IReadOnlyList<int> Blocks => BlocksInternal;
+
+        internal List<Cell> Cells { get; }
+
+        private bool _completed;
+        public bool Completed
+        {
+            get { return _completed; }
+            set
+            {
+                Set(ref _completed, value);
+            }
+        }
+
+        public CartaLine(int index)
         {
             Index = index;
-            Blocks = blocks;
+            Cells = new List<Cell>();
+
+            // Initialization with 1 item to signal an empty line.
+            BlocksInternal = new List<int> { 0 };
+        }
+
+        private void CheckCompleted()
+        {
+            // Empty row
+            if(Blocks.Count == 0 && Blocks[0] == 0)
+            {
+                Completed = true;
+                return;
+            }
         }
     }
 }
