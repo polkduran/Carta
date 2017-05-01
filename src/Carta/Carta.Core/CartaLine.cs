@@ -15,10 +15,7 @@ namespace Carta.Core
         public bool Completed
         {
             get { return _completed; }
-            set
-            {
-                Set(ref _completed, value);
-            }
+            private set { Set(ref _completed, value); }
         }
 
         public CartaLine(int index)
@@ -57,7 +54,7 @@ namespace Carta.Core
 
         private void Cell_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(Cell.VisualState))
+            if (e.PropertyName == nameof(Cell.VisualState))
             {
                 CheckCompleted();
             }
@@ -74,13 +71,6 @@ namespace Carta.Core
 
         private void CheckCompleted()
         {
-            // Empty row
-            if (Blocks.Count == 1 && Blocks[0] == 0)
-            {
-                Completed = true;
-                return;
-            }
-
             var cellsBlocks = new List<int>();
             var prevCellFilled = false;
             foreach (var cell in Cells)
@@ -102,6 +92,12 @@ namespace Carta.Core
                     prevCellFilled = false;
                 }
             }
+
+            // for empty lines.
+            if(cellsBlocks.Count == 0)
+            {
+                cellsBlocks.Add(0);
+            }
             if (cellsBlocks.Count != Blocks.Count)
             {
                 Completed = false;
@@ -120,7 +116,7 @@ namespace Carta.Core
 
         public void Over()
         {
-            foreach(var cell in Cells)
+            foreach (var cell in Cells)
             {
                 cell.PropertyChanged -= Cell_PropertyChanged;
             }

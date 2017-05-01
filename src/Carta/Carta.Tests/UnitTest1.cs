@@ -10,7 +10,7 @@ namespace Carta.Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void GridInitialLineStateTest()
+        public void InitialLinesStateTest()
         {
             /*
                  c0 c1 c2 c3
@@ -30,6 +30,73 @@ namespace Carta.Tests
             Assert.IsTrue(cartaGrid.Rows.All(r => !r.Completed));
             Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 1).All(c => !c.Completed));
             Assert.AreEqual(true, cartaGrid.Columns[1].Completed);
+        }
+
+        [TestMethod]
+        public void ChangeLinesStateTest()
+        {
+            /*     c0 c1 c2 c3
+               r0 [ o  .  o  . ]
+               r1 [ o  .  o  o ]
+               r2 [ .  .  o  . ] */
+            var grid = new bool[4, 3] {
+                { true, true, false },
+                { false, false, false },
+                { true, true, true},
+                { false, true, false },
+            };
+
+            var cartaGrid = new CartaGrid(grid);
+
+            Assert.IsFalse(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.Rows.All(r => !r.Completed));
+            Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 1).All(c => !c.Completed));
+            Assert.IsTrue(cartaGrid.Columns[1].Completed);
+
+            /*     c0 c1 c2 c3          c0 c1 c2 c3
+               r0 [ o  .  o  . ]    r0 [ .  .  .  . ]
+               r1 [ o  .  o  o ]    r1 [ .  x  .  . ]
+               r2 [ .  .  o  . ]    r2 [ .  .  .  . ] */
+            cartaGrid.Cells[1, 1].VisualState = CellVisualState.MarkedAsFilled;
+            Assert.IsFalse(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.AllLines.All(l => !l.Completed));
+
+            /*     c0 c1 c2 c3          c0 c1 c2 c3
+               r0 [ o  .  o  . ]    r0 [ .  .  .  . ]
+               r1 [ o  .  o  o ]    r1 [ .  x  x  x ]
+               r2 [ .  .  o  . ]    r2 [ .  .  .  . ] */
+            cartaGrid.Cells[2, 1].VisualState = CellVisualState.MarkedAsFilled;
+            cartaGrid.Cells[3, 1].VisualState = CellVisualState.MarkedAsFilled;
+            Assert.IsFalse(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.Rows.All(r => !r.Completed));
+            Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 3).All(c => !c.Completed));
+            Assert.IsTrue(cartaGrid.Columns[3].Completed);
+
+            /*     c0 c1 c2 c3          c0 c1 c2 c3
+               r0 [ o  .  o  . ]    r0 [ .  .  .  . ]
+               r1 [ o  .  o  o ]    r1 [ x  x  x  . ]
+               r2 [ .  .  o  . ]    r2 [ x  .  .  . ] */
+            cartaGrid.Cells[3, 1].VisualState = CellVisualState.None;
+            cartaGrid.Cells[0, 1].VisualState = CellVisualState.MarkedAsFilled;
+            cartaGrid.Cells[0, 2].VisualState = CellVisualState.MarkedAsFilled;
+            Assert.IsFalse(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.Rows.Where(r => r.Index!=2).All(r => !r.Completed));
+            Assert.IsTrue(cartaGrid.Rows[2].Completed);
+            Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 0).All(c => !c.Completed));
+            Assert.IsTrue(cartaGrid.Columns[0].Completed);
+
+            /*     c0 c1 c2 c3          c0 c1 c2 c3  
+               r0 [ o  .  o  . ]    r0 [ x  .  x  . ]
+               r1 [ o  .  o  o ]    r1 [ x  .  x  x ]
+               r2 [ .  .  o  . ]    r2 [ .  .  x  . ] */
+            cartaGrid.Cells[0, 2].VisualState = CellVisualState.None;
+            cartaGrid.Cells[1, 1].VisualState = CellVisualState.None;
+            cartaGrid.Cells[0, 0].VisualState = CellVisualState.MarkedAsFilled;
+            cartaGrid.Cells[3, 1].VisualState = CellVisualState.MarkedAsFilled;
+            cartaGrid.Cells[2, 0].VisualState = CellVisualState.MarkedAsFilled;
+            cartaGrid.Cells[2, 2].VisualState = CellVisualState.MarkedAsFilled;
+            Assert.IsTrue(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.AllLines.All(l => l.Completed));
         }
 
         [TestMethod]

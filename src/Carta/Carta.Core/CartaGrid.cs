@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Carta.Core
 {
-    public class CartaGrid
+    public class CartaGrid : ObservableObject
     {
         public Cell[,] Cells { get; private set; }
 
@@ -19,6 +19,13 @@ namespace Carta.Core
         private readonly List<CartaLine> _allLines = new List<CartaLine>();
         internal IEnumerable<CartaLine> AllLines => _allLines;
 
+        private bool _completed;
+        public bool Completed
+        {
+            get { return _completed; }
+            private set { Set(ref _completed, value); }
+        }
+
         public CartaGrid(bool[,] grid)
         {
             BuildCellGrid(grid);
@@ -30,12 +37,12 @@ namespace Carta.Core
 
             for (int x = 0; x < grid.GetLength(0); x++)
             {
-                NewColumn(x);
+                NewLine(x, _columns);
                 for (int y = 0; y < grid.GetLength(1); y++)
                 {
                     if (x == 0)
                     {
-                        NewRow(y);
+                        NewLine(y, _rows);
                     }
                     var cell = new Cell(x, y, grid[x, y]);
                     Cells[x, y] = cell;
@@ -52,18 +59,28 @@ namespace Carta.Core
             }
         }
 
-        private void NewRow(int y)
+        private void NewLine(int index, List<CartaLine> group)
         {
-            var row = new CartaLine(y);
-            _rows.Add(row);
-            _allLines.Add(row);
+            var line = new CartaLine(index);
+            line.PropertyChanged += Line_PropertyChanged;
+            group.Add(line);
+            _allLines.Add(line);
         }
 
-        private void NewColumn(int x)
+        private void Line_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var column = new CartaLine(x);
-            _columns.Add(column);
-            _allLines.Add(column);
+            if(e.PropertyName == nameof(CartaLine.Completed))
+            {
+                CheckCompleted();
+            }
+        }
+
+        private void CheckCompleted()
+        {
+            if(AllLines.All(l => l.Completed))
+            {
+                Completed = true;
+            }
         }
     }
 }
