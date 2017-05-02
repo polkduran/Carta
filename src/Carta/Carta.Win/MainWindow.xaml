@@ -15,6 +15,7 @@
             <local:CellDataTemplateSelector.NotMarkedTemplate>
                 <DataTemplate>
                     <Border Height="20"
+                            Width="20"
                             Background="Azure"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -23,6 +24,7 @@
             <local:CellDataTemplateSelector.EmptyMarkedTemplate>
                 <DataTemplate>
                     <Border Height="20"
+                            Width="20"
                             Background="Bisque"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -31,6 +33,7 @@
             <local:CellDataTemplateSelector.FilledMarkedTemplate>
                 <DataTemplate>
                     <Border Height="20"
+                            Width="20"
                             Background="Aquamarine"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -58,7 +61,7 @@
             <ItemsControl ItemsSource="{Binding Cells}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding Grid.Columns.Count}" />
+                        <UniformGrid Columns="{Binding Grid.Columns.Count}" Height="Auto" Width="Auto"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
@@ -67,7 +70,6 @@
                             MouseDown="StackPanel_MouseDown" 
                             MouseEnter="UIElement_OnMouseEnter"
                             MouseUp="StackPanel_MouseUp">
-                            <TextBlock Text="{Binding}" />
                             <ContentControl Content="{Binding VisualState}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
                         </StackPanel>
                     </DataTemplate>
