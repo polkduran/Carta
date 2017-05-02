@@ -97,6 +97,17 @@ namespace Carta.Tests
             cartaGrid.Cells[2, 2].VisualState = CellVisualState.MarkedAsFilled;
             Assert.IsTrue(cartaGrid.Completed);
             Assert.IsTrue(cartaGrid.AllLines.All(l => l.Completed));
+
+            /*     c0 c1 c2 c3          c0 c1 c2 c3  
+               r0 [ o  .  o  . ]    r0 [ x  .  x  . ]
+               r1 [ o  .  o  o ]    r1 [ x  .  x  x ]
+               r2 [ .  .  o  . ]    r2 [ .  .  .  . ] */
+            cartaGrid.Cells[2, 2].VisualState = CellVisualState.None;
+            Assert.IsFalse(cartaGrid.Completed);
+            Assert.IsTrue(cartaGrid.Rows.Where(r => r.Index != 2).All(r => r.Completed));
+            Assert.IsFalse(cartaGrid.Rows[2].Completed);
+            Assert.IsTrue(cartaGrid.Columns.Where(c => c.Index != 2).All(c => c.Completed));
+            Assert.IsFalse(cartaGrid.Columns[2].Completed);
         }
 
         [TestMethod]

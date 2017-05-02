@@ -25,5 +25,10 @@
             Y = y;
             Filled = filled;
         }
+
+        public override string ToString()
+        {
+            return $"({X}, {Y}):{VisualState}:{Filled}";
+        }
     }
 }

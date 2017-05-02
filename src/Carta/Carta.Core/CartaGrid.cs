@@ -69,7 +69,7 @@ namespace Carta.Core
 
         private void Line_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(CartaLine.Completed))
+            if (e.PropertyName == nameof(CartaLine.Completed))
             {
                 CheckCompleted();
             }
@@ -77,10 +77,7 @@ namespace Carta.Core
 
         private void CheckCompleted()
         {
-            if(AllLines.All(l => l.Completed))
-            {
-                Completed = true;
-            }
+            Completed = AllLines.All(l => l.Completed);
         }
     }
 }
