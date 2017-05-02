@@ -2,11 +2,74 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Carta.Win"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MainWindow"
+        Width="525"
+        Height="350"
+        d:DataContext="{d:DesignInstance Type=local:CartaVm,
+                                         IsDesignTimeCreatable=False}"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <local:CellDataTemplateSelector x:Key="CellDataTemplateSelector">
+            <local:CellDataTemplateSelector.NotMarkedTemplate>
+                <DataTemplate>
+                    <Border Height="20"
+                            Background="Azure"
+                            BorderBrush="Black"
+                            BorderThickness="1" />
+                </DataTemplate>
+            </local:CellDataTemplateSelector.NotMarkedTemplate>
+            <local:CellDataTemplateSelector.EmptyMarkedTemplate>
+                <DataTemplate>
+                    <Border Height="20"
+                            Background="Bisque"
+                            BorderBrush="Black"
+                            BorderThickness="1" />
+                </DataTemplate>
+            </local:CellDataTemplateSelector.EmptyMarkedTemplate>
+            <local:CellDataTemplateSelector.FilledMarkedTemplate>
+                <DataTemplate>
+                    <Border Height="20"
+                            Background="Aquamarine"
+                            BorderBrush="Black"
+                            BorderThickness="1" />
+                </DataTemplate>
+            </local:CellDataTemplateSelector.FilledMarkedTemplate>
+        </local:CellDataTemplateSelector>
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Click="ButtonBase_OnClick" Content="New" />
+            <TextBlock Text="Grid completed: " />
+            <TextBlock Text="{Binding Grid.Completed}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+
+            <ItemsControl ItemsSource="{Binding Cells}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding Grid.Columns.Count}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel MouseDown="UIElement_OnMouseEnter" MouseEnter="UIElement_OnMouseEnter">
+                            <TextBlock Text="{Binding}" />
+                            <ContentControl Content="{Binding VisualState}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </Grid>
+
     </Grid>
 </Window>
