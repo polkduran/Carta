@@ -37,5 +37,10 @@ namespace Carta.Win
                 _vm.Toggle(cell);
             }
         }
+
+        private void ChangeMode_OnClick(object sender, RoutedEventArgs e)
+        {
+            _vm.ChangeMode();
+        }
     }
 }

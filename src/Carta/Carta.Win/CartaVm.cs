@@ -14,7 +14,7 @@ namespace Carta.Win
         public CellVisualState SelectedCellVisualState
         {
             get { return _selectedCellVisualState; }
-            set { Set(ref _selectedCellVisualState , value); }
+            private set { Set(ref _selectedCellVisualState , value); }
         }
 
         public CartaVm(CartaGrid grid)
@@ -36,13 +36,25 @@ namespace Carta.Win
 
         public void Toggle(Cell cell)
         {
-            if (cell.VisualState != CellVisualState.None)
+            if (cell.VisualState == SelectedCellVisualState)
             {
                 cell.VisualState = CellVisualState.None;
             }
             else
             {
                 cell.VisualState = SelectedCellVisualState;
+            }
+        }
+
+        public void ChangeMode()
+        {
+            if (SelectedCellVisualState == CellVisualState.MarkedAsFilled)
+            {
+                SelectedCellVisualState = CellVisualState.MarkedAsEmpty;
+            }
+            else
+            {
+                SelectedCellVisualState = CellVisualState.MarkedAsFilled;
             }
         }
     }

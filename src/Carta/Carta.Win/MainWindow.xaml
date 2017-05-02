@@ -49,6 +49,8 @@
             <Button Click="ButtonBase_OnClick" Content="New" />
             <TextBlock Text="Grid completed: " />
             <TextBlock Text="{Binding Grid.Completed}" />
+            <Button Click="ChangeMode_OnClick" Content="Mode: " />
+            <TextBlock Text="{Binding SelectedCellVisualState}" />
         </StackPanel>
 
         <Grid Grid.Row="1">
