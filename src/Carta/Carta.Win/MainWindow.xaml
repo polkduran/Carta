@@ -63,7 +63,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel MouseDown="UIElement_OnMouseEnter" MouseEnter="UIElement_OnMouseEnter">
+                        <StackPanel 
+                            MouseDown="StackPanel_MouseDown" 
+                            MouseEnter="UIElement_OnMouseEnter"
+                            MouseUp="StackPanel_MouseUp">
                             <TextBlock Text="{Binding}" />
                             <ContentControl Content="{Binding VisualState}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
                         </StackPanel>

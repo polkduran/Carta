@@ -42,5 +42,16 @@ namespace Carta.Win
         {
             _vm.ChangeMode();
         }
+
+        private void StackPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _vm.CurrentCellState = null;
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var cell = (Cell)((FrameworkElement)sender).DataContext;
+            _vm.SetCurrentCelleState(cell);
+        }
     }
 }

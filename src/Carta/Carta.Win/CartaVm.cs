@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using Carta.Core;
 
@@ -11,10 +12,17 @@ namespace Carta.Win
 
         public IEnumerable<Cell> Cells { get; set; }
 
-        public CellVisualState SelectedCellVisualState
+        public CellVisualState CellVisualStateMode
         {
             get { return _selectedCellVisualState; }
-            private set { Set(ref _selectedCellVisualState , value); }
+            private set { Set(ref _selectedCellVisualState, value); }
+        }
+
+        private CellVisualState? _currentCellState;
+        public CellVisualState? CurrentCellState
+        {
+            get { return _currentCellState; }
+            set { Set(ref _currentCellState, value); }
         }
 
         public CartaVm(CartaGrid grid)
@@ -31,31 +39,41 @@ namespace Carta.Win
             }
 
             Cells = cells;
-            SelectedCellVisualState = CellVisualState.MarkedAsFilled;
+            CellVisualStateMode = CellVisualState.MarkedAsFilled;
         }
 
         public void Toggle(Cell cell)
         {
-            if (cell.VisualState == SelectedCellVisualState)
+            if (CurrentCellState == null)
             {
-                cell.VisualState = CellVisualState.None;
+                return;
             }
-            else
-            {
-                cell.VisualState = SelectedCellVisualState;
-            }
+            cell.VisualState = CurrentCellState.Value;
         }
 
         public void ChangeMode()
         {
-            if (SelectedCellVisualState == CellVisualState.MarkedAsFilled)
+            if (CellVisualStateMode == CellVisualState.MarkedAsFilled)
             {
-                SelectedCellVisualState = CellVisualState.MarkedAsEmpty;
+                CellVisualStateMode = CellVisualState.MarkedAsEmpty;
             }
             else
             {
-                SelectedCellVisualState = CellVisualState.MarkedAsFilled;
+                CellVisualStateMode = CellVisualState.MarkedAsFilled;
             }
+        }
+
+        internal void SetCurrentCelleState(Cell cell)
+        {
+            if (cell.VisualState == CellVisualState.None)
+            {
+                CurrentCellState = CellVisualStateMode;
+            }
+            else
+            {
+                CurrentCellState = CellVisualState.None;
+            }
+            Toggle(cell);
         }
     }
 }
