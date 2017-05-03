@@ -68,9 +68,12 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel MouseDown="StackPanel_MouseDown"
-                                    MouseEnter="UIElement_OnMouseEnter"
-                                    MouseUp="StackPanel_MouseUp">
+
+                        <StackPanel 
+                            MouseDown="StackPanel_MouseDown" 
+                            MouseEnter="UIElement_OnMouseEnter"
+                            MouseUp="StackPanel_MouseUp">
+
                             <ContentControl Content="{Binding State}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
                         </StackPanel>
                     </DataTemplate>
