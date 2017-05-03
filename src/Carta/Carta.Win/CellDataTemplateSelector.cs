@@ -15,15 +15,15 @@ namespace Carta.Win
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var visualState = (CellVisualState)item;
+            var state = (CellState)item;
 
-            switch (visualState)
+            switch (state)
             {
-                case CellVisualState.None:
+                case CellState.None:
                     return NotMarkedTemplate;
-                case CellVisualState.MarkedAsFilled:
+                case CellState.MarkedAsFilled:
                     return FilledMarkedTemplate;
-                case CellVisualState.MarkedAsEmpty:
+                case CellState.MarkedAsEmpty:
                     return EmptyMarkedTemplate;
                 default:
                     throw new ArgumentOutOfRangeException();

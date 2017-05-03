@@ -54,7 +54,7 @@ namespace Carta.Core
 
         private void Cell_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Cell.VisualState))
+            if (e.PropertyName == nameof(Cell.State))
             {
                 CheckCompleted();
             }
@@ -75,7 +75,7 @@ namespace Carta.Core
             var prevCellFilled = false;
             foreach (var cell in Cells)
             {
-                if (cell.VisualState == CellVisualState.MarkedAsFilled)
+                if (cell.State == CellState.MarkedAsFilled)
                 {
                     if (prevCellFilled)
                     {

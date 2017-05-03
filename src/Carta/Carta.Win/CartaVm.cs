@@ -7,19 +7,19 @@ namespace Carta.Win
 {
     public class CartaVm : ObservableObject
     {
-        private CellVisualState _selectedCellVisualState;
+        private CellState _selectedCellState;
         public CartaGrid Grid { get; set; }
 
         public IEnumerable<Cell> Cells { get; set; }
 
-        public CellVisualState CellVisualStateMode
+        public CellState CellStateMode
         {
-            get { return _selectedCellVisualState; }
-            private set { Set(ref _selectedCellVisualState, value); }
+            get { return _selectedCellState; }
+            private set { Set(ref _selectedCellState, value); }
         }
 
-        private CellVisualState? _currentCellState;
-        public CellVisualState? CurrentCellState
+        private CellState? _currentCellState;
+        public CellState? CurrentCellState
         {
             get { return _currentCellState; }
             set { Set(ref _currentCellState, value); }
@@ -39,7 +39,7 @@ namespace Carta.Win
             }
 
             Cells = cells;
-            CellVisualStateMode = CellVisualState.MarkedAsFilled;
+            CellStateMode = CellState.MarkedAsFilled;
         }
 
         public void Toggle(Cell cell)
@@ -48,30 +48,30 @@ namespace Carta.Win
             {
                 return;
             }
-            cell.VisualState = CurrentCellState.Value;
+            cell.State = CurrentCellState.Value;
         }
 
         public void ChangeMode()
         {
-            if (CellVisualStateMode == CellVisualState.MarkedAsFilled)
+            if (CellStateMode == CellState.MarkedAsFilled)
             {
-                CellVisualStateMode = CellVisualState.MarkedAsEmpty;
+                CellStateMode = CellState.MarkedAsEmpty;
             }
             else
             {
-                CellVisualStateMode = CellVisualState.MarkedAsFilled;
+                CellStateMode = CellState.MarkedAsFilled;
             }
         }
 
         internal void SetCurrentCelleState(Cell cell)
         {
-            if (cell.VisualState == CellVisualState.None)
+            if (cell.State == CellState.None)
             {
-                CurrentCellState = CellVisualStateMode;
+                CurrentCellState = CellStateMode;
             }
             else
             {
-                CurrentCellState = CellVisualState.None;
+                CurrentCellState = CellState.None;
             }
             Toggle(cell);
         }

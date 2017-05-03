@@ -70,7 +70,7 @@
                             MouseDown="StackPanel_MouseDown" 
                             MouseEnter="UIElement_OnMouseEnter"
                             MouseUp="StackPanel_MouseUp">
-                            <ContentControl Content="{Binding VisualState}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
+                            <ContentControl Content="{Binding State}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

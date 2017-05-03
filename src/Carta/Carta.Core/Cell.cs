@@ -6,16 +6,16 @@
         public int Y { get; }
         public bool Filled { get; }
 
-        private CellVisualState _visualState;
-        public CellVisualState VisualState
+        private CellState _state;
+        public CellState State
         {
             get
             {
-                return _visualState;
+                return _state;
             }
             set
             {
-                Set(ref _visualState, value);
+                Set(ref _state, value);
             }
         }
 
@@ -28,7 +28,7 @@
 
         public override string ToString()
         {
-            return $"({X}, {Y}):{VisualState}:{Filled}";
+            return $"({X}, {Y}):{State}:{Filled}";
         }
     }
 }
