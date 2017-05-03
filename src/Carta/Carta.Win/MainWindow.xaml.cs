@@ -51,7 +51,7 @@ namespace Carta.Win
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var cell = (Cell)((FrameworkElement)sender).DataContext;
-            _vm.SetCurrentCelleState(cell);
+            _vm.SetCurrentCellState(cell);
         }
     }
 }

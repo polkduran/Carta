@@ -14,8 +14,8 @@
         <local:CellDataTemplateSelector x:Key="CellDataTemplateSelector">
             <local:CellDataTemplateSelector.NotMarkedTemplate>
                 <DataTemplate>
-                    <Border Height="20"
-                            Width="20"
+                    <Border Width="20"
+                            Height="20"
                             Background="Azure"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -23,8 +23,8 @@
             </local:CellDataTemplateSelector.NotMarkedTemplate>
             <local:CellDataTemplateSelector.EmptyMarkedTemplate>
                 <DataTemplate>
-                    <Border Height="20"
-                            Width="20"
+                    <Border Width="20"
+                            Height="20"
                             Background="Bisque"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -32,8 +32,8 @@
             </local:CellDataTemplateSelector.EmptyMarkedTemplate>
             <local:CellDataTemplateSelector.FilledMarkedTemplate>
                 <DataTemplate>
-                    <Border Height="20"
-                            Width="20"
+                    <Border Width="20"
+                            Height="20"
                             Background="Aquamarine"
                             BorderBrush="Black"
                             BorderThickness="1" />
@@ -53,7 +53,7 @@
             <TextBlock Text="Grid completed: " />
             <TextBlock Text="{Binding Grid.Completed}" />
             <Button Click="ChangeMode_OnClick" Content="Mode: " />
-            <TextBlock Text="{Binding SelectedCellVisualState}" />
+            <TextBlock Text="{Binding CellStateMode}" />
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -61,16 +61,17 @@
             <ItemsControl ItemsSource="{Binding Cells}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding Grid.Columns.Count}" Height="Auto" Width="Auto"/>
+                        <UniformGrid Width="Auto"
+                                     Height="Auto"
+                                     Columns="{Binding Grid.Columns.Count}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel 
-                            MouseDown="StackPanel_MouseDown" 
-                            MouseEnter="UIElement_OnMouseEnter"
-                            MouseUp="StackPanel_MouseUp">
-                            <ContentControl Content="{Binding VisualState}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
+                        <StackPanel MouseDown="StackPanel_MouseDown"
+                                    MouseEnter="UIElement_OnMouseEnter"
+                                    MouseUp="StackPanel_MouseUp">
+                            <ContentControl Content="{Binding State}" ContentTemplateSelector="{StaticResource CellDataTemplateSelector}" />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
