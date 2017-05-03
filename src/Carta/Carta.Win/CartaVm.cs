@@ -63,7 +63,7 @@ namespace Carta.Win
             }
         }
 
-        internal void SetCurrentCelleState(Cell cell)
+        internal void SetCurrentCellState(Cell cell)
         {
             if (cell.State == CellState.None)
             {
